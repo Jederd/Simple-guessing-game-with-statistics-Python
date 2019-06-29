@@ -1,0 +1,78 @@
+"""guess_game_fun
+guess game with a fun ction
+in this project iuseseverel functions"""
+
+import random
+
+prompt = 'Whats your guess? '
+
+#new constants
+Quit = -1
+Quit_text = 'q'
+Quit_message = 'Thanks for playin'
+Confirm_quit_message = 'Are you sure you want to quit? (y/n)'
+
+#new confirm_quit function
+def confirm_quit():
+    """ask user if the really want to quit
+    default to yes
+    yes is true and until said no is false """
+    spam = input(Confirm_quit_message)
+    if spam == 'n':
+       return False
+    else:
+       return True
+
+def do_guess_round():
+    """Choose a random number ask playuer for guess
+    check whether true
+    if true win if false keep guess repeat till correct"""
+    computers_number = random.randint(1,100)
+    number_of_guesses = 0
+    while True:
+        players_guess = input(prompt)
+        #new cause to test against quit
+        if players_guess == Quit_text:
+            if confirm_quit():
+                return Quit
+            else:
+                continue #that is, do the next round of the loop
+        number_of_guesses = number_of_guesses+1
+        if computers_number == int(players_guess):
+            print('whoo hoo you got it!!!')
+            return number_of_guesses
+        elif computers_number < int(players_guess):
+            print ('Too high')
+        else:
+            print ('Too low')
+
+total_rounds = 0
+total_guesses = 0
+
+while True:
+    total_rounds = total_rounds+1
+    print ('starting round number: '+str(total_rounds))
+    print ('let the guessing begin!!!')
+    this_round = do_guess_round()
+
+    #new condition to test quit function
+    if this_round == Quit:
+        total_rounds = total_rounds-1
+        avg = str(total_guesses/float(total_rounds))
+        if total_rounds == 0:
+            stats_message = 'you completed no rounds '+\
+                        'please try again later'
+        else:
+            stats_message = 'You played ' + str(total_rounds)+\
+                        '     Rounds with an average of '+\
+                        str(avg)
+        break
+
+    total_guesses = total_guesses+this_round
+    avg = str(total_guesses/float(total_rounds))
+    print ('you took '+str(this_round)+' guesses')
+    print ('your guessing averge = '+str(avg))
+    print(" ")
+
+#added to quit message
+print (stats_message)
